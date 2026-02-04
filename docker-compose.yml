@@ -1,0 +1,50 @@
+services:
+  # Serviço do banco de dados MySQL
+  db:
+    image: mysql:8.0
+    container_name: jogo_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: jogoscore
+      MYSQL_USER: gameuser
+      MYSQL_PASSWORD: gamepass
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - jogo_network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot_password"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Serviço da aplicação PHP com Apache
+  web:
+    build: .
+    container_name: jogo_web
+    restart: always
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - jogo_network
+    environment:
+      DB_HOST: db
+      DB_NAME: jogoscore
+      DB_USER: gameuser
+      DB_PASS: gamepass
+
+volumes:
+  db_data:
+
+networks:
+  jogo_network:
+    driver: bridge

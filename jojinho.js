@@ -57,8 +57,8 @@ inimigos = {
     tipos: [
         {
             larguraBase: 25,
-            alturaBase: 65, 
-            velocidadeBase: 10,
+            alturaBase: 65,
+            velocidadeBase: 2,
             // dano: 2.5,
             dano: 10,
             pontuacao: 5
@@ -157,7 +157,7 @@ inimigos = {
             let atual = inimigos.QTDE[i];
 
             imagem = new Image();
-            imagem.src = "imagens/Inimigos/Zumbi " + atual.especie + "/" + atual.localizacao + "/" + atual.status + ".png";
+            imagem.src = "assets/imagens/Inimigos/Zumbi " + atual.especie + "/" + atual.localizacao + "/" + atual.status + ".png";
 
             spriteInimigo[atual.status][atual.spriteAtual % spriteInimigo[atual.status].length].desenha(atual.x, chao.y[atual.y] - 
                                                                                                         inimigos.tipos[atual.especie]["alturaBase"] -
@@ -200,12 +200,12 @@ arma = {
             
             if(x >= 0){
                 ctx.rotate(Math.atan(y/x));
-                imagem.src = "imagens/Personagem/bracoDireita.png";
+                imagem.src = "assets/imagens/Personagem/bracoDireita.png";
                 this.desenharPrimeiro = false;
                 braco.desenha(0, -7);
             }else{
                 ctx.rotate(Math.atan(y/x) + Math.PI);
-                imagem.src = "imagens/Personagem/bracoEsquerda.png";
+                imagem.src = "assets/imagens/Personagem/bracoEsquerda.png";
                 this.desenharPrimeiro = true;
                 braco.desenha(-2, -2);
             }
@@ -351,9 +351,9 @@ personagem = {
 
         if(this.perdeu == false){
             if(arma.desenharPrimeiro == true)
-                imagem.src = "imagens/Personagem/esquerda.png";
+                imagem.src = "assets/imagens/Personagem/esquerda.png";
             else
-                imagem.src = "imagens/Personagem/direita.png";
+                imagem.src = "assets/imagens/Personagem/direita.png";
     
             if((keyUp || keyDown) && frame % this.frameTroca == 0){
                 this.spriteAtual++;
@@ -365,7 +365,7 @@ personagem = {
                 
             spritePersonagem[this.spriteAtual].desenha(xPersonagem, yPersonagem);
         }else{
-            imagem.src = "imagens/Personagem/morto.png";
+            imagem.src = "assets/imagens/Personagem/morto.png";
             personagemPerdeu.desenha(xPersonagem - 5, yPersonagem + 10);
         }
     }
@@ -429,16 +429,16 @@ plataforma = {
         imagem = new Image();
 
         if(this.vida > this.vidaMax * 0.25){
-            imagem.src = "imagens/Onibus/100.png";
+            imagem.src = "assets/imagens/Onibus/100.png";
             onibus[0].desenha(xAux, yAux);
         }else if(this.vida > 0){
-            imagem.src = "imagens/Onibus/25.png";
+            imagem.src = "assets/imagens/Onibus/25.png";
             this.atualizar25();
             onibus[1].desenha(xAux - 4, yAux);
         }else if(this.vida <= 0 && personagem.perdeu == false){
             gameover(xAux - 4, yAux);
         }else{
-            imagem.src = "imagens/Onibus/0.png";
+            imagem.src = "assets/imagens/Onibus/0.png";
             plataforma.atualizar0();
             onibus[2].desenha(xAux - 4, yAux);    
         }
@@ -501,7 +501,7 @@ function gameover(x, y){
                                     }, 500);
         plataforma.desenhar();
     }else{
-        imagem.src = "imagens/Onibus/25.png";
+        imagem.src = "assets/imagens/Onibus/25.png";
         onibus[1].desenha(x, y);
     }
     salvar(jogador.score);
@@ -579,7 +579,7 @@ function atualizar(){
 function desenhar(){
     if(pause !=true){
         imagem = new Image();
-        imagem.src = "imagens/background.png";
+        imagem.src = "assets/imagens/background.png";
         background.desenha(0, 0);
 
         if(personagem.perdeu == false){

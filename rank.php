@@ -1,18 +1,16 @@
-<?php 
-	$dsn = "mysql:dbname=jogoscore;host=127.0.0.1";
-	// $dsn = "mysql:dbname=test;host=localhost";
-	$dbuser = "root";
-	$dbpass = "";
+<?php
+	// Inclui o arquivo de configuração do banco de dados
+	require_once 'db_config.php';
 
 	try {
-		$pdo = new PDO($dsn, $dbuser, $dbpass);
+		$pdo = getConnection();
 
 		$sql = "SELECT * FROM score ORDER BY pontos DESC LIMIT 5";
-		$sql = $pdo->query($sql); //Requisicao ao banco
+		$stmt = $pdo->query($sql);
 
 		$dados = [];
-		if($sql->rowCount() > 0){
-			foreach($sql->fetchAll() as $jogador){
+		if($stmt->rowCount() > 0){
+			foreach($stmt->fetchAll() as $jogador){
 				$dados[] = $jogador;
 			}
 		} else {

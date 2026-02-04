@@ -1,16 +1,19 @@
 <?php
-	$dsn = "mysql:dbname=jogoscore;host=127.0.0.1";
-	$dbuser = "root";
-	$dbpass = "";
+	// Inclui o arquivo de configuração do banco de dados
+	require_once 'db_config.php';
 
 	try {
-		$pdo = new PDO($dsn, $dbuser, $dbpass);
+		$pdo = getConnection();
 
 		$nome = $_POST['nome'];
 		$ponto = $_POST['ponto'];
-		
-		$sql = "INSERT INTO score SET pontos = '$ponto', nome = '$nome'";
-		$sql = $pdo->query($sql);
+
+		// Usa prepared statements para prevenir SQL injection
+		$sql = "INSERT INTO score (nome, pontos) VALUES (:nome, :ponto)";
+		$stmt = $pdo->prepare($sql);
+		$stmt->bindParam(':nome', $nome);
+		$stmt->bindParam(':ponto', $ponto);
+		$stmt->execute();
 
 		echo "Usuário inserido: ".$pdo->lastInsertId();
 
